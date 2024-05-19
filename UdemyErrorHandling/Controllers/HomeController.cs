@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using UdemyErrorHandling.Filter;
 using UdemyErrorHandling.Models;
 
 namespace UdemyErrorHandling.Controllers
 {
+	//[CustomHandleExceptionFilter(ErrorPage = "error1")] Controller bazlý exception filter.
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
@@ -15,6 +17,7 @@ namespace UdemyErrorHandling.Controllers
 			_logger = logger;
 		}
 
+		[CustomHandleExceptionFilter(ErrorPage = "error1")]
 		public IActionResult Index()
 		{
 			int value1 = 5;
@@ -23,6 +26,7 @@ namespace UdemyErrorHandling.Controllers
 			return View();
 		}
 
+		[CustomHandleExceptionFilter(ErrorPage = "error2")]
 		public IActionResult Privacy()
 		{
 			throw new FileNotFoundException();
@@ -39,5 +43,16 @@ namespace UdemyErrorHandling.Controllers
 			ViewBag.message = exception?.Error.Message;
 			return View();
 		}
+
+		public IActionResult Error1()
+		{
+			return View();
+		}
+
+		public IActionResult Error2()
+		{
+			return View();
+		}
+
 	}
 }
